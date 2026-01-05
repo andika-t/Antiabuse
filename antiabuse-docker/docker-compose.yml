@@ -1,0 +1,61 @@
+services:
+  db:
+    image: mariadb:11
+    container_name: antiabuse-d
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: antiabuse_db
+      MYSQL_USER: antiabuseuser
+      MYSQL_PASSWORD: secret123
+    volumes:
+      - db_data:/var/lib/mysql
+      - ../database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    ports:
+      - "3306:3306"
+    networks:
+      - copypaste
+
+  web:
+    build: ./www
+    container_name: antiabuse-w
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ../public:/var/www/html
+      - ../app:/var/www/app
+      - ../templates:/var/www/templates
+      - ../uploads:/var/www/uploads
+      - ../assets:/var/www/html/assets
+    environment:
+      APP_URL: http://antiabuse.local
+      DB_HOST: db
+      DB_NAME: antiabuse_db
+      DB_USER: antiabuseuser
+      DB_PASS: secret123
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URI: http://localhost/auth/google_callback.php
+    depends_on:
+      - db
+    networks:
+      - copypaste
+
+  nagios:
+    image: jasonrivers/nagios
+    platform: linux/amd64
+    container_name: antiabuse-n
+    restart: unless-stopped
+    ports:
+      - "8081:80"
+      - "5666:5666"
+    networks:
+      - copypaste
+
+volumes:
+  db_data:
+
+networks:
+  copypaste:
+    external: true

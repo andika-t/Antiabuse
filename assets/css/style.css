@@ -1,0 +1,567 @@
+/* Glassify Theme with Gradient - Mewah */
+:root {
+    --color-bg: #ffffff;
+    --color-primary: #FD7979;
+    --color-secondary: #F9DFDF;
+    --color-white: #ffffff;
+    --color-text: #2b2b2b;
+    --color-text-light: #666666;
+    --glass-bg: rgba(255, 255, 255, 0.4);
+    --glass-border: rgba(255, 255, 255, 0.3);
+    --shadow-light: 0 8px 32px 0 rgba(253, 121, 121, 0.2);
+    --shadow-medium: 0 8px 32px 0 rgba(253, 121, 121, 0.3);
+    --gradient-primary: linear-gradient(180deg, #ffffff 0%, #fef5f5 100%);
+    --gradient-soft: linear-gradient(135deg, #F9DFDF 0%, #FD7979 100%);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    position: relative;
+    overflow-x: hidden;
+    background: linear-gradient(180deg, #ffffff 0%, #ffe0e6 100%);
+    background-attachment: fixed;
+    color: var(--color-text);
+}
+
+/* Full Background Layer */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, #ffffff 0%, #ffe0e6 100%);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Auth Layout Container */
+.auth-container {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+/* Welcome Section (60%) - Left Side */
+.welcome-section {
+    flex: 0 0 60%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px;
+    color: var(--color-text);
+    position: relative;
+    background: transparent;
+}
+
+.welcome-content {
+    max-width: 500px;
+    animation: fadeInLeft 0.8s ease-out;
+}
+
+.welcome-section h1 {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    line-height: 1.2;
+    color: var(--color-text);
+    text-shadow: 0 2px 10px rgba(253, 121, 121, 0.2);
+}
+
+.welcome-section .subtitle {
+    font-size: 24px;
+    font-weight: 300;
+    margin-bottom: 30px;
+    color: var(--color-text);
+    line-height: 1.5;
+}
+
+.welcome-section .description {
+    font-size: 16px;
+    line-height: 1.8;
+    color: var(--color-text);
+    margin-bottom: 40px;
+    opacity: 0.8;
+}
+
+.welcome-features {
+    list-style: none;
+    padding: 0;
+}
+
+.welcome-features li {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: var(--color-text);
+}
+
+.welcome-features li::before {
+    content: '✓';
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    background: var(--gradient-soft);
+    border-radius: 50%;
+    margin-right: 15px;
+    font-weight: bold;
+    font-size: 18px;
+    color: var(--color-white);
+    flex-shrink: 0;
+    box-shadow: 0 4px 15px rgba(253, 121, 121, 0.3);
+}
+
+@keyframes fadeInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Form Section (40%) - Right Side */
+.form-section {
+    flex: 0 0 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    background: transparent;
+}
+
+/* Animated background elements - softer (using wrapper) */
+body {
+    position: relative;
+}
+
+/* Create a background wrapper for animated elements */
+body::after {
+    content: '';
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(253, 121, 121, 0.1) 0%, transparent 70%);
+    z-index: 0;
+    top: -200px;
+    right: -200px;
+    animation: float 20s infinite ease-in-out;
+    animation-delay: 0s;
+    pointer-events: none;
+}
+
+/* Additional animated element - using box-shadow trick or separate element */
+.auth-container::before {
+    content: '';
+    position: fixed;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(249, 223, 223, 0.15) 0%, transparent 70%);
+    z-index: 0;
+    bottom: -200px;
+    left: -200px;
+    animation: float 20s infinite ease-in-out;
+    animation-delay: 10s;
+    pointer-events: none;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+    }
+    50% {
+        transform: translate(50px, 50px) scale(1.1);
+    }
+}
+
+/* Glass Card Container */
+.glass-container {
+    background: #ffffff;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15),
+                0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    width: 100%;
+    max-width: 450px;
+    position: relative;
+    z-index: 1;
+    animation: slideIn 0.5s ease-out;
+    transition: all 0.3s ease;
+}
+
+.glass-container:hover {
+    box-shadow: 0 12px 48px rgba(0, 0, 0, 0.2),
+                0 6px 24px rgba(0, 0, 0, 0.15);
+    transform: translateY(-4px);
+}
+
+/* Glass Container in Form Section */
+.form-section .glass-container {
+    background: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15),
+                0 4px 16px rgba(0, 0, 0, 0.1);
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Logo/Brand */
+.brand {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.brand h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--color-text);
+    margin-bottom: 10px;
+    text-shadow: 0 2px 10px rgba(253, 121, 121, 0.2);
+}
+
+.brand p {
+    color: var(--color-text);
+    font-size: 14px;
+    opacity: 0.7;
+}
+
+/* Form Styles */
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-text);
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 12px 16px;
+    border: 2px solid rgba(211, 78, 78, 0.3);
+    border-radius: 12px;
+    background: #ffffff;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: var(--color-text);
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: #D34E4E;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(211, 78, 78, 0.15);
+}
+
+.form-group input::placeholder {
+    color: var(--color-text);
+    opacity: 0.5;
+}
+
+/* Password Input Wrapper */
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--color-text);
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+    transition: color 0.3s ease;
+    opacity: 0.6;
+}
+
+.password-toggle:hover {
+    color: var(--color-primary);
+    opacity: 1;
+}
+
+/* Error Messages */
+.error-message {
+    background: rgba(253, 121, 121, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(253, 121, 121, 0.3);
+    color: var(--color-text);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.success-message {
+    background: rgba(76, 175, 80, 0.15);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    color: var(--color-text);
+    padding: 12px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    font-size: 14px;
+    text-align: center;
+}
+
+/* Primary Button */
+.btn-primary {
+    width: 100%;
+    padding: 14px;
+    background: #D34E4E;
+    border: none;
+    border-radius: 12px;
+    color: var(--color-white);
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px rgba(211, 78, 78, 0.4);
+    margin-top: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-primary:hover::before {
+    left: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba(211, 78, 78, 0.5);
+    background: #c04545;
+}
+
+.btn-primary:active {
+    transform: translateY(0);
+}
+
+.btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* Divider */
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 25px 0;
+    color: var(--color-text);
+    font-size: 14px;
+    opacity: 0.6;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.4);
+}
+
+.divider span {
+    padding: 0 15px;
+}
+
+/* Google Button */
+.btn-google {
+    width: 100%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 12px;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.btn-google:hover {
+    background: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(253, 121, 121, 0.2);
+}
+
+.btn-google svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+}
+
+.btn-google img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Link */
+.link-text {
+    text-align: center;
+    margin-top: 20px;
+    color: var(--color-text);
+    font-size: 14px;
+    opacity: 0.8;
+}
+
+.link-text a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.link-text a:hover {
+    color: #FD7979;
+    text-decoration: underline;
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 968px) {
+    .auth-container {
+        flex-direction: column;
+    }
+    
+    .welcome-section {
+        flex: 1;
+        padding: 40px 30px;
+        text-align: center;
+        align-items: center;
+    }
+    
+    .welcome-content {
+        max-width: 100%;
+    }
+    
+    .welcome-section h1 {
+        font-size: 36px;
+    }
+    
+    .welcome-section .subtitle {
+        font-size: 20px;
+    }
+    
+    .form-section {
+        flex: 1;
+        padding: 30px 20px;
+    }
+    
+    .glass-container {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .glass-container {
+        padding: 30px 20px;
+    }
+    
+    .brand h1 {
+        font-size: 28px;
+    }
+    
+    .welcome-section {
+        padding: 30px 20px;
+    }
+    
+    .welcome-section h1 {
+        font-size: 28px;
+    }
+    
+    .welcome-section .subtitle {
+        font-size: 18px;
+    }
+    
+    .welcome-section .description {
+        font-size: 14px;
+    }
+}
+
+/* Loading Spinner */
+.spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: var(--color-white);
+    animation: spin 0.8s linear infinite;
+}
+
+/* Ensure all text uses default color */
+* {
+    color: inherit;
+}
+
+body, p, span, div, h1, h2, h3, h4, h5, h6, label, input, textarea, select {
+    color: var(--color-text);
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+

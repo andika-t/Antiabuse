@@ -1,0 +1,31 @@
+# Enable Rewrite Engine
+RewriteEngine On
+
+# Redirect to index.php if accessing root of public
+RewriteRule ^$ index.php [L]
+
+# Prevent direct access to app, templates, config folders (if they exist in public)
+RewriteCond %{REQUEST_URI} ^/(app|templates|config)/
+RewriteRule ^(.*)$ - [F,L]
+
+# Prevent direct access to config files
+<FilesMatch "^(config|database)\.php$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Security Headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# PHP Settings
+<IfModule mod_php7.c>
+    php_value upload_max_filesize 10M
+    php_value post_max_size 10M
+    php_value max_execution_time 300
+    php_value max_input_time 300
+</IfModule>
+

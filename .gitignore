@@ -1,0 +1,26 @@
+# Environment variables
+.env
+antiabuse-docker/.env
+
+# Docker volumes
+antiabuse-docker/db_data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Temporary files
+tmp/
+temp/
+
