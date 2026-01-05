@@ -4,10 +4,43 @@ require_once __DIR__ . '/../../app/config/config.php';
 require_once __DIR__ . '/../../app/includes/functions.php';
 require_once __DIR__ . '/../../app/config/database.php';
 
+// Debug logging untuk troubleshooting session
+error_log("User index - Session ID: " . session_id());
+error_log("User index - Session status: " . (session_status() === PHP_SESSION_ACTIVE ? 'ACTIVE' : 'INACTIVE'));
+error_log("User index - HTTP_HOST: " . ($_SERVER['HTTP_HOST'] ?? 'NOT SET'));
+error_log("User index - BASE_URL: " . BASE_URL);
+error_log("User index - Session data: " . print_r($_SESSION ?? [], true));
+error_log("User index - isLoggedIn: " . (isLoggedIn() ? 'YES' : 'NO'));
+error_log("User index - User role: " . (getUserRole() ?? 'NOT SET'));
+
 // Check if user is logged in and is general user
-requireLogin();
-if (getUserRole() != 'general_user') {
-    redirectTo(BASE_URL . '/login.php', 'Akses ditolak', 'error');
+// Tambahkan error handling yang lebih robust
+try {
+    if (!isLoggedIn()) {
+        error_log("User index - User not logged in, redirecting to login");
+        // Pastikan redirect menggunakan BASE_URL yang benar
+        $loginUrl = BASE_URL . '/login.php';
+        error_log("User index - Redirecting to: " . $loginUrl);
+        header('Location: ' . $loginUrl);
+        exit();
+    }
+    
+    $userRole = getUserRole();
+    if ($userRole != 'general_user') {
+        error_log("User index - Access denied for role: " . ($userRole ?? 'NULL'));
+        // Pastikan redirect menggunakan BASE_URL yang benar
+        $loginUrl = BASE_URL . '/login.php?error=access_denied';
+        error_log("User index - Redirecting to: " . $loginUrl);
+        header('Location: ' . $loginUrl);
+        exit();
+    }
+} catch (Exception $e) {
+    error_log("User index - Error in authentication check: " . $e->getMessage());
+    error_log("User index - Stack trace: " . $e->getTraceAsString());
+    // Fallback redirect
+    $loginUrl = BASE_URL . '/login.php?error=system_error';
+    header('Location: ' . $loginUrl);
+    exit();
 }
 
 // Get user info

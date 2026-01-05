@@ -12,7 +12,7 @@ services:
       - db_data:/var/lib/mysql
       - ../database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     ports:
-      - "127.0.0.1:3306:3306"
+      - "3306:3306"
     networks:
       - copypaste
 
@@ -21,7 +21,7 @@ services:
     container_name: antiabuse-w
     restart: unless-stopped
     ports:
-      - "127.0.0.1:80:80"
+      - "80:80"
     volumes:
       - ../public:/var/www/html
       - ../app:/var/www/app
@@ -29,28 +29,18 @@ services:
       - ../uploads:/var/www/uploads
       - ../assets:/var/www/html/assets
     environment:
-      APP_URL: https://${CLOUDFLARE_URL:-antiabuse.trycloudflare.com}
+      APP_URL: http://antiabuse.local
       DB_HOST: db
       DB_NAME: antiabuse_db
       DB_USER: antiabuseuser
       DB_PASS: secret123
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URI: https://${CLOUDFLARE_URL:-antiabuse.trycloudflare.com}/auth/google_callback.php
+      GOOGLE_REDIRECT_URI: http://localhost/auth/google_callback.php
     depends_on:
       - db
     networks:
       - copypaste
-
-  cloudflared:
-    image: cloudflare/cloudflared:latest
-    container_name: antiabuse-cloudflared
-    restart: unless-stopped
-    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TUNNEL_TOKEN}
-    networks:
-      - copypaste
-    depends_on:
-      - web
 
   nagios:
     image: jasonrivers/nagios
@@ -58,8 +48,8 @@ services:
     container_name: antiabuse-n
     restart: unless-stopped
     ports:
-      - "127.0.0.1:8081:80"
-      - "0.0.0.0:5666:5666"
+      - "8081:80"
+      - "5666:5666"
     networks:
       - copypaste
 
