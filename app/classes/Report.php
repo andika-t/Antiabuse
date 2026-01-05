@@ -27,8 +27,16 @@ class Report {
         }
         
         // Validate CSRF token
-        if (!isset($_POST['csrf_token']) || !verifyCSRFToken($_POST['csrf_token'])) {
-            return ['error' => 'Invalid security token'];
+        if (!isset($_POST['csrf_token']) || empty($_POST['csrf_token'])) {
+            // Regenerate token for security
+            unset($_SESSION['csrf_token']);
+            return ['error' => 'Invalid security token. Silakan refresh halaman dan coba lagi.'];
+        }
+        
+        if (!verifyCSRFToken($_POST['csrf_token'])) {
+            // Regenerate token for security
+            unset($_SESSION['csrf_token']);
+            return ['error' => 'Invalid security token. Silakan refresh halaman dan coba lagi.'];
         }
         
         // Validate input

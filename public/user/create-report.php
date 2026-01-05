@@ -30,6 +30,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_report'])) {
 
 // Get draft data from session if exists
 $draft = $_SESSION['report_draft'] ?? [];
+
+// Generate CSRF token untuk form security
+$csrfToken = generateCSRFToken();
 ?>
 <!DOCTYPE html>
 <html lang="id">
@@ -492,6 +495,9 @@ $draft = $_SESSION['report_draft'] ?? [];
             <?php endif; ?>
             
             <form id="reportForm" method="POST" enctype="multipart/form-data" action="">
+                <!-- CSRF Token untuk security -->
+                <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($csrfToken); ?>">
+                
                 <!-- Step 1: Pilih Identitas -->
                 <div class="step-content <?php echo $step == 1 ? 'active' : ''; ?>" data-step="1">
                     <h2 style="margin-bottom: 20px; color: var(--color-text);">Pilih Identitas</h2>

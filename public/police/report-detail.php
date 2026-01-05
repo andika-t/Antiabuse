@@ -481,33 +481,6 @@ $priorityColors = [
                         <p style="color: var(--color-text-light); font-size: 14px; padding: 10px; background: rgba(255, 255, 255, 0.5); border-radius: 8px;">Status tidak dapat diubah lagi</p>
                     <?php endif; ?>
                 </div>
-                
-                <!-- Modal untuk catatan -->
-                <div id="statusModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 2000; align-items: center; justify-content: center;">
-                    <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
-                        <h3 style="margin-top: 0; color: var(--color-text); margin-bottom: 20px;">Update Status</h3>
-                        <form id="statusForm" method="POST">
-                            <input type="hidden" name="old_status" value="<?php echo htmlspecialchars($report['status']); ?>">
-                            <input type="hidden" id="modalStatus" name="status">
-                            <div style="margin-bottom: 15px;">
-                                <label style="display: block; margin-bottom: 5px; color: var(--color-text); font-weight: 600;">Catatan (Opsional):</label>
-                                <textarea id="modalNotes" name="status_notes" rows="4" style="width: 100%; padding: 10px; border: 1px solid rgba(253, 121, 121, 0.2); border-radius: 8px; font-family: inherit; resize: vertical;" placeholder="Tambahkan catatan untuk perubahan status ini..."></textarea>
-                            </div>
-                            <div id="rejectionReasonGroup" style="display: none; margin-bottom: 15px;">
-                                <label style="display: block; margin-bottom: 5px; color: var(--color-text); font-weight: 600;">Alasan Penolakan *:</label>
-                                <textarea id="modalRejectionReason" name="rejection_reason" rows="4" style="width: 100%; padding: 10px; border: 1px solid rgba(253, 121, 121, 0.2); border-radius: 8px; font-family: inherit; resize: vertical;" placeholder="Jelaskan alasan penolakan laporan ini..."></textarea>
-                            </div>
-                            <div style="display: flex; gap: 10px; justify-content: flex-end;">
-                                <button type="button" onclick="closeStatusModal()" style="padding: 10px 20px; background: rgba(255, 255, 255, 0.6); color: var(--color-text); border: 1px solid rgba(253, 121, 121, 0.2); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
-                                    Batal
-                                </button>
-                                <button type="submit" name="update_status" style="padding: 10px 20px; background: var(--color-primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
-                                    Update
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
             </div>
             
             <!-- Assigned Info (Read-only) -->
@@ -635,6 +608,33 @@ $priorityColors = [
         </main>
     </div>
     
+    <!-- Modal untuk catatan - Dipindahkan ke level body untuk menghindari stacking context issues -->
+    <div id="statusModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.5); z-index: 99999 !important; align-items: center; justify-content: center; overflow-y: auto; padding: 20px; backdrop-filter: blur(2px);">
+        <div style="background: white; border-radius: 20px; padding: 30px; max-width: 500px; width: 90%; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3); position: relative; z-index: 100000 !important; margin: auto;">
+            <h3 style="margin-top: 0; color: var(--color-text); margin-bottom: 20px;">Update Status</h3>
+            <form id="statusForm" method="POST">
+                <input type="hidden" name="old_status" value="<?php echo htmlspecialchars($report['status']); ?>">
+                <input type="hidden" id="modalStatus" name="status">
+                <div style="margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: var(--color-text); font-weight: 600;">Catatan (Opsional):</label>
+                    <textarea id="modalNotes" name="status_notes" rows="4" style="width: 100%; padding: 10px; border: 1px solid rgba(253, 121, 121, 0.2); border-radius: 8px; font-family: inherit; resize: vertical; box-sizing: border-box;" placeholder="Tambahkan catatan untuk perubahan status ini..."></textarea>
+                </div>
+                <div id="rejectionReasonGroup" style="display: none; margin-bottom: 15px;">
+                    <label style="display: block; margin-bottom: 5px; color: var(--color-text); font-weight: 600;">Alasan Penolakan *:</label>
+                    <textarea id="modalRejectionReason" name="rejection_reason" rows="4" style="width: 100%; padding: 10px; border: 1px solid rgba(253, 121, 121, 0.2); border-radius: 8px; font-family: inherit; resize: vertical; box-sizing: border-box;" placeholder="Jelaskan alasan penolakan laporan ini..."></textarea>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <button type="button" onclick="closeStatusModal()" style="padding: 10px 20px; background: rgba(255, 255, 255, 0.6); color: var(--color-text); border: 1px solid rgba(253, 121, 121, 0.2); border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
+                        Batal
+                    </button>
+                    <button type="submit" name="update_status" style="padding: 10px 20px; background: var(--color-primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600; transition: all 0.3s ease;">
+                        Update
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
         function updateStatus(newStatus, button) {
             document.getElementById('modalStatus').value = newStatus;
@@ -650,19 +650,38 @@ $priorityColors = [
                 document.getElementById('modalRejectionReason').required = false;
             }
             
-            document.getElementById('statusModal').style.display = 'flex';
+            // Show modal dengan proper flexbox
+            const modal = document.getElementById('statusModal');
+            modal.style.display = 'flex';
+            // Force modal to front dengan z-index tinggi
+            modal.style.zIndex = '99999';
+            // Prevent body scroll when modal is open
+            document.body.style.overflow = 'hidden';
         }
         
         function closeStatusModal() {
-            document.getElementById('statusModal').style.display = 'none';
+            const modal = document.getElementById('statusModal');
+            modal.style.display = 'none';
             document.getElementById('modalNotes').value = '';
             document.getElementById('modalRejectionReason').value = '';
+            // Restore body scroll
+            document.body.style.overflow = '';
         }
         
         // Close modal when clicking outside
         document.getElementById('statusModal')?.addEventListener('click', function(e) {
             if (e.target === this) {
                 closeStatusModal();
+            }
+        });
+        
+        // Close modal on Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modal = document.getElementById('statusModal');
+                if (modal && modal.style.display === 'flex') {
+                    closeStatusModal();
+                }
             }
         });
     </script>
