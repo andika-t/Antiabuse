@@ -4,10 +4,10 @@ services:
     container_name: antiabuse-d
     restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: rootpass123
-      MYSQL_DATABASE: antiabuse_db
-      MYSQL_USER: antiabuseuser
-      MYSQL_PASSWORD: secret123
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     volumes:
       - db_data:/var/lib/mysql
       - ../database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
@@ -29,14 +29,14 @@ services:
       - ../uploads:/var/www/uploads
       - ../assets:/var/www/html/assets
     environment:
-      APP_URL: http://antiabuse.local
-      DB_HOST: db
-      DB_NAME: antiabuse_db
-      DB_USER: antiabuseuser
-      DB_PASS: secret123
+      APP_URL: ${APP_URL}
+      DB_HOST: ${DB_HOST}
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASS: ${DB_PASS}
       GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      GOOGLE_REDIRECT_URI: http://localhost/auth/google_callback.php
+      GOOGLE_REDIRECT_URI: ${GOOGLE_REDIRECT_URL}
     depends_on:
       - db
     networks:
@@ -50,6 +50,16 @@ services:
     ports:
       - "8081:80"
       - "5666:5666"
+    networks:
+      - copypaste
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: antiabuse-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run --token eyJhIjoiYzcyMTUzMDlkZjkwNWI1MDVmZmY3MTE1NzBhOWEzMmIiLCJ0IjoiNmE2OWVjNmEtOGVlZi00ZTA0LTliN2EtYTE3ZTRiMTU2YmMyIiwicyI6IlptTTBabUkxWldVdFkyVmtOeTAwT0RKakxUa3pZelF0TjJFNFptRmhOV1l5TjJNMCJ9
+    depends_on:
+      - web
     networks:
       - copypaste
 

@@ -66,7 +66,7 @@ function getBaseUrl() {
     // Jika HTTP_HOST tersedia, gunakan itu (selalu sesuai dengan request actual)
     if ($host && $host !== '') {
         // Check if we're in public folder (local dev) atau di Docker (document root = public)
-        $isInPublic = strpos($scriptName, '/public/') !== false;
+    $isInPublic = strpos($scriptName, '/public/') !== false;
         
         // Detect Docker: document root berakhir dengan /html atau /public (typical Docker setup)
         // Atau jika SCRIPT_NAME tidak mengandung /public/ dan bukan root
@@ -75,31 +75,31 @@ function getBaseUrl() {
             strpos($documentRoot, '/public') !== false ||
             (strpos($scriptName, '/public/') === false && $scriptName !== '/')
         );
-        
-        if ($isInPublic) {
-            // Local dev: script is in /public/xxx.php -> go up 2 levels
-            $rootPath = dirname(dirname($scriptName));
-        } else {
-            // Docker/production: document root is already public/
+    
+    if ($isInPublic) {
+        // Local dev: script is in /public/xxx.php -> go up 2 levels
+        $rootPath = dirname(dirname($scriptName));
+    } else {
+        // Docker/production: document root is already public/
             // Di Docker, SCRIPT_NAME seperti /auth/google_callback.php
             // Kita tidak perlu menambahkan path karena document root sudah public
             // BASE_URL harus langsung ke host root
             $rootPath = '';
-        }
-        
-        // Clean up root path
-        if ($rootPath === '/' || $rootPath === '\\') {
-            $rootPath = '';
-        }
-        
-        $baseUrl = $protocol . $host . $rootPath;
-        
+    }
+    
+    // Clean up root path
+    if ($rootPath === '/' || $rootPath === '\\') {
+        $rootPath = '';
+    }
+    
+    $baseUrl = $protocol . $host . $rootPath;
+    
         // JANGAN tambahkan /public jika di Docker (document root sudah public)
         // Hanya tambahkan /public jika local dev dan script tidak di public folder
         if (!$isDocker && !$isInPublic && strpos($scriptName, '/public') === false) {
-            $baseUrl .= '/public';
-        }
-        
+        $baseUrl .= '/public';
+    }
+    
         $detectedUrl = rtrim($baseUrl, '/');
         error_log("BASE_URL detected from HTTP_HOST: " . $detectedUrl);
         error_log("BASE_URL debug - SCRIPT_NAME: " . $scriptName . ", DOCUMENT_ROOT: " . $documentRoot . ", isDocker: " . ($isDocker ? 'true' : 'false') . ", isInPublic: " . ($isInPublic ? 'true' : 'false'));
@@ -153,7 +153,7 @@ if (isLoggedIn() && isset($_SESSION['last_activity'])) {
 // Update last activity - hanya jika user sudah logged in
 // Jangan set last_activity jika belum login untuk mencegah false timeout checks
 if (isLoggedIn()) {
-    $_SESSION['last_activity'] = time();
+$_SESSION['last_activity'] = time();
 }
 
 // ========== HELPER FUNCTIONS ==========

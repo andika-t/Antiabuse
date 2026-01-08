@@ -157,8 +157,8 @@ try {
         
         // Insert user details (jika tabel ada)
         try {
-            $stmt = $conn->prepare("INSERT INTO general_user_details (user_id, full_name) VALUES (?, ?)");
-            $stmt->execute([$user_id, $name]);
+        $stmt = $conn->prepare("INSERT INTO general_user_details (user_id, full_name) VALUES (?, ?)");
+        $stmt->execute([$user_id, $name]);
         } catch(PDOException $e) {
             error_log("Google OAuth - Warning: Could not insert user details: " . $e->getMessage());
             // Continue anyway
